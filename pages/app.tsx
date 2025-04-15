@@ -17,7 +17,9 @@ export default function LoginPage() {
                 body: JSON.stringify({
                     privyId: user.id,
                     email: user.email?.address,
-                    walletAddress: user.linkedAccounts?.find(account => account.type === 'wallet')?.address,
+                    walletAddress: user.linkedAccounts?.find(
+                        (account) => account.type === 'wallet',
+                    )?.address,
                 }),
             })
                 .then((res) => res.json())
@@ -49,10 +51,11 @@ export default function LoginPage() {
                         Connect Wallet or Sign In
                     </button>
                     <div className="text-center text-sm text-gray-400">
-                        By connecting, you agree to our Terms of Service and Privacy Policy
+                        By connecting, you agree to our Terms of Service and
+                        Privacy Policy
                     </div>
                 </div>
             </div>
         </div>
     );
-} 
+}

@@ -30,7 +30,7 @@ export default function NavBar({ links = [] }: NavBarProps) {
                             {link.title}
                         </Link>
                     ))}
-                    <Link 
+                    <Link
                         href="/app"
                         className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
                     >
@@ -40,4 +40,4 @@ export default function NavBar({ links = [] }: NavBarProps) {
             </div>
         </header>
     );
-} 
+}

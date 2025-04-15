@@ -1,12 +1,12 @@
-import { getServerSession } from 'next-auth';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth';
 
 const prisma = new PrismaClient();
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse
+    res: NextApiResponse,
 ) {
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method not allowed' });
@@ -24,20 +24,20 @@ export default async function handler(
             where: { privyId },
         });
 
-        if (!user) {
-            // Create new user
-            user = await prisma.user.create({
+        if (user) {
+            // Update existing user
+            user = await prisma.user.update({
+                where: { privyId },
                 data: {
-                    privyId,
                     email,
                     walletAddress,
                 },
             });
         } else {
-            // Update existing user
-            user = await prisma.user.update({
-                where: { privyId },
+            // Create new user
+            user = await prisma.user.create({
                 data: {
+                    privyId,
                     email,
                     walletAddress,
                 },
@@ -49,4 +49,4 @@ export default async function handler(
         console.error('Error handling Privy user:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
-} 
+}

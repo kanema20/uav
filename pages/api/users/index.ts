@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import authOptions from '../auth/[...nextauth]';
 
@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse
+    res: NextApiResponse,
 ) {
     const session = await getServerSession(req, res, authOptions);
 
@@ -126,4 +126,4 @@ async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
         console.error('Error deleting user:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
-} 
+}

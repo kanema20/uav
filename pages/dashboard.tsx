@@ -1,7 +1,7 @@
+import { User } from '@prisma/client';
 import { usePrivy } from '@privy-io/react-auth';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { User } from '@prisma/client';
 
 export default function Dashboard() {
     const { authenticated, user, logout } = usePrivy();
@@ -19,7 +19,9 @@ export default function Dashboard() {
         const fetchUserData = async () => {
             if (user?.id) {
                 try {
-                    const response = await fetch(`/api/user?privyId=${user.id}`);
+                    const response = await fetch(
+                        `/api/user?privyId=${user.id}`,
+                    );
                     if (response.ok) {
                         const data = await response.json();
                         setDbUser(data);
@@ -39,7 +41,9 @@ export default function Dashboard() {
         return null;
     }
 
-    const wallet = user.linkedAccounts?.find(account => account.type === 'wallet');
+    const wallet = user.linkedAccounts?.find(
+        (account) => account.type === 'wallet',
+    );
 
     return (
         <div className="min-h-screen bg-gray-900 text-white">
@@ -56,16 +60,24 @@ export default function Dashboard() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="bg-gray-800 rounded-xl p-6">
-                        <h2 className="text-xl font-semibold mb-4">Wallet Information</h2>
+                        <h2 className="text-xl font-semibold mb-4">
+                            Wallet Information
+                        </h2>
                         {wallet ? (
                             <div className="space-y-4">
                                 <div>
-                                    <p className="text-gray-400">Wallet Address</p>
-                                    <p className="font-mono text-sm break-all">{wallet.address}</p>
+                                    <p className="text-gray-400">
+                                        Wallet Address
+                                    </p>
+                                    <p className="font-mono text-sm break-all">
+                                        {wallet.address}
+                                    </p>
                                 </div>
                                 <div>
                                     <p className="text-gray-400">Wallet Type</p>
-                                    <p className="text-sm capitalize">{wallet.type}</p>
+                                    <p className="text-sm capitalize">
+                                        {wallet.type}
+                                    </p>
                                 </div>
                             </div>
                         ) : (
@@ -74,12 +86,16 @@ export default function Dashboard() {
                     </div>
 
                     <div className="bg-gray-800 rounded-xl p-6">
-                        <h2 className="text-xl font-semibold mb-4">Account Information</h2>
+                        <h2 className="text-xl font-semibold mb-4">
+                            Account Information
+                        </h2>
                         <div className="space-y-4">
                             {user.email?.address && (
                                 <div>
                                     <p className="text-gray-400">Email</p>
-                                    <p className="text-sm">{user.email.address}</p>
+                                    <p className="text-sm">
+                                        {user.email.address}
+                                    </p>
                                 </div>
                             )}
                             <div>
@@ -90,18 +106,28 @@ export default function Dashboard() {
                     </div>
 
                     <div className="bg-gray-800 rounded-xl p-6">
-                        <h2 className="text-xl font-semibold mb-4">Database Information</h2>
+                        <h2 className="text-xl font-semibold mb-4">
+                            Database Information
+                        </h2>
                         {loading ? (
                             <p className="text-gray-400">Loading...</p>
                         ) : dbUser ? (
                             <div className="space-y-4">
                                 <div>
                                     <p className="text-gray-400">Created At</p>
-                                    <p className="text-sm">{new Date(dbUser.createdAt).toLocaleString()}</p>
+                                    <p className="text-sm">
+                                        {new Date(
+                                            dbUser.createdAt,
+                                        ).toLocaleString()}
+                                    </p>
                                 </div>
                                 <div>
                                     <p className="text-gray-400">Updated At</p>
-                                    <p className="text-sm">{new Date(dbUser.updatedAt).toLocaleString()}</p>
+                                    <p className="text-sm">
+                                        {new Date(
+                                            dbUser.updatedAt,
+                                        ).toLocaleString()}
+                                    </p>
                                 </div>
                                 {dbUser.name && (
                                     <div>
@@ -111,17 +137,23 @@ export default function Dashboard() {
                                 )}
                                 {dbUser.walletAddress && (
                                     <div>
-                                        <p className="text-gray-400">Wallet Address</p>
-                                        <p className="font-mono text-sm break-all">{dbUser.walletAddress}</p>
+                                        <p className="text-gray-400">
+                                            Wallet Address
+                                        </p>
+                                        <p className="font-mono text-sm break-all">
+                                            {dbUser.walletAddress}
+                                        </p>
                                     </div>
                                 )}
                             </div>
                         ) : (
-                            <p className="text-gray-400">No database record found</p>
+                            <p className="text-gray-400">
+                                No database record found
+                            </p>
                         )}
                     </div>
                 </div>
             </div>
         </div>
     );
-} 
+}
