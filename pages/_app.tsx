@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { type Atom, Provider } from 'jotai';
+import { Provider, createStore } from 'jotai';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
+import PrivyProvider from '../components/PrivyProvider';
 
 import logger from '../logger';
 import store from '../store';
@@ -23,27 +24,18 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === 'yes') {
 }
 
 const queryClient = new QueryClient();
+const jotaiStore = createStore();
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const { initialState } = pageProps;
     return (
-        <Provider
-            // @ts-expect-error initialValue is not in the types
-            initialValues={
-                initialState &&
-                ([[store.counterAtom, initialState]] as Iterable<
-                    readonly [Atom<unknown>, unknown]
-                >)
-            }
-        >
-            <SessionProvider
-                session={pageProps.session}
-                refetchInterval={5 * 60}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <Component {...pageProps} />
-                    <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
+        <Provider store={jotaiStore}>
+            <SessionProvider session={pageProps.session}>
+                <PrivyProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <Component {...pageProps} />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </QueryClientProvider>
+                </PrivyProvider>
             </SessionProvider>
         </Provider>
     );

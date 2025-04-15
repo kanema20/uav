@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
-import Header from '../Header';
+import NavBar from '../NavBar';
 
 function Layout({ children }: { readonly children: ReactNode }) {
     return (
         <div>
-            <Header
+            <NavBar
                 links={[
                     {
                         title: 'Contact',
